@@ -3,7 +3,7 @@
    Cart (localStorage) · Quote modal · Toast · Product filter · Checkout
    ════════════════════════════════════════════════════════════════════ */
 const CART_KEY = "hfsc_cart";
-const FREE_SHIP_THRESHOLD = 2000;
+const FREE_SHIP_THRESHOLD = 1000;
 const FLAT_SHIP = 500;
 // International freight by region (must match backend orders.py FREIGHT_MAP).
 const FREIGHT_MAP = {

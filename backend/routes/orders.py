@@ -33,8 +33,8 @@ def create_order(
     items_dicts = [item.model_dump() for item in order_in.items]
     subtotal = sum(i["unit_price"] * i["quantity"] for i in items_dicts)
 
-    # Domestic: free over $2,000, else flat $500. International: freight map.
-    shipping = 0.0 if subtotal >= 2000 else 500.0
+    # Domestic: free over $1,000, else flat $500. International: freight map.
+    shipping = 0.0 if subtotal >= 1000 else 500.0
     if order_in.freight_region and order_in.freight_region != "Domestic (USA)":
         shipping = float(FREIGHT_MAP.get(order_in.freight_region, 1600))
 
