@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(){try{if(localStorage.getItem("hfsc_theme")==="light")document.documentElement.setAttribute("data-theme","light");}catch(e){}})();</script>
+  <title>Admin — Hunting &amp; Fishing Supply Co</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css?v=19">
+  <style>
+    .admin-top { background: #0a0a0a; border-bottom: 2px solid var(--accent); padding: 14px 0; }
+    .admin-top .wrap { display: flex; align-items: center; justify-content: space-between; }
+    .admin-brand { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; text-transform: uppercase; color: var(--accent); font-size: 1.2rem; }
+    .admin-brand span { background: var(--accent); color: #111; padding: 2px 8px; border-radius: 3px; font-size: .8rem; margin-left: 6px; }
+    .login-screen { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+    .login-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 34px; width: min(380px, 92%); }
+    .login-box h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 4px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 24px 0; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 18px; }
+    .stat-card.warn { border-left: 3px solid var(--accent); }
+    .stat-label { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: 1px; }
+    .stat-value { font-family: 'Inter', system-ui, sans-serif; font-size: 1.9rem; color: var(--accent); }
+    .tabs { display: flex; gap: 6px; margin: 20px 0; }
+    .tab { background: var(--surface-2); border: 1px solid var(--border-med); color: var(--muted); padding: 9px 18px; border-radius: 4px; cursor: pointer; font-family: 'Inter', system-ui, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .tab.active { background: var(--accent); color: #111; border-color: var(--accent); }
+    table.admin { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+    table.admin th { background: var(--surface-2); text-align: left; padding: 11px 14px; font-family: 'Inter', system-ui, sans-serif; text-transform: uppercase; letter-spacing: .5px; font-size: .82rem; color: var(--text); }
+    table.admin td { padding: 11px 14px; border-top: 1px solid var(--border); font-size: .88rem; vertical-align: middle; }
+    table.admin tr:hover td { background: var(--surface-2); }
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; text-transform: capitalize; }
+    .pill.pending { background: rgba(226,138,0,.15); color: var(--accent); }
+    .pill.confirmed, .pill.contacted { background: rgba(34,197,94,.15); color: var(--success); }
+    .pill.shipped, .pill.completed { background: rgba(96,165,250,.15); color: #60a5fa; }
+    .pill.cancelled { background: rgba(239,68,68,.15); color: var(--danger); }
+    .row-actions { display: flex; gap: 6px; align-items: center; }
+    .row-actions select { width: auto; margin: 0; padding: 6px 8px; font-size: .82rem; }
+    .mini-btn { background: var(--surface-3); border: 1px solid var(--border-med); color: var(--text); padding: 6px 10px; border-radius: 3px; cursor: pointer; font-size: .8rem; }
+    .mini-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .mini-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+    .empty-row { text-align: center; color: var(--muted); padding: 30px; }
+    .detail-modal .modal-card { max-width: 640px; }
+    .detail-body { padding: 22px 24px; max-height: 70vh; overflow-y: auto; }
+    .detail-body table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    .detail-body td { padding: 6px 8px; border-bottom: 1px solid var(--border); font-size: .88rem; }
+    .detail-body td:first-child { color: var(--muted); width: 38%; }
+    @media (max-width: 880px) { .stat-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ── Animations (respect prefers-reduced-motion) ── */
+    @keyframes adminUp  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes adminPop { from { opacity: 0; transform: scale(.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @media (prefers-reduced-motion: no-preference) {
+      .login-box { animation: adminPop .45s ease both; }
+      #dashboard > h1 { animation: adminUp .45s ease both; }
+      .stat-card { animation: adminUp .5s ease both; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+      .stat-grid .stat-card:nth-child(1) { animation-delay: .04s; }
+      .stat-grid .stat-card:nth-child(2) { animation-delay: .10s; }
+      .stat-grid .stat-card:nth-child(3) { animation-delay: .16s; }
+      .stat-grid .stat-card:nth-child(4) { animation-delay: .22s; }
+      .stat-grid .stat-card:nth-child(5) { animation-delay: .28s; }
+      .tabs       { animation: adminUp .5s ease both; animation-delay: .30s; }
+      table.admin { animation: adminUp .5s ease both; animation-delay: .34s; }
+      table.admin tbody tr { animation: adminUp .4s ease both; }
+      .mini-btn, .tab, .row-actions select { transition: all .2s ease; }
+      .detail-modal.open .modal-card { animation: adminPop .3s ease both; }
+    }
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+      .stat-card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,.4); border-color: var(--accent); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-top"><div class="wrap">
+  <div class="admin-brand">Hunting &amp; Fishing Supply Co <span>Admin</span></div>
+  <div>
+    <a href="/" class="mini-btn" style="text-decoration:none;">View Store ↗</a>
+    <button id="logout-btn" class="mini-btn" style="display:none;" onclick="logout()">Log Out</button>
+  </div>
+</div></div>
+
+<!-- LOGIN -->
+<div id="login-screen" class="login-screen">
+  <div class="login-box">
+    <h1>Staff Login</h1>
+    <p class="muted">Sign in to manage orders &amp; inquiries.</p>
+    <form id="login-form" onsubmit="login(event)" style="margin-top:18px;">
+      <label>Username<input id="login-user" autocomplete="username" required></label>
+      <label>Password<input id="login-pass" type="password" autocomplete="current-password" required></label>
+      <div id="login-error" class="order-error" style="display:none;">Invalid username or password.</div>
+      <button class="btn-primary btn-block" type="submit">Log In</button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="wrap section" style="display:none;">
+  <h1>Dashboard</h1>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-label">Orders</div><div class="stat-value" id="s-orders">0</div></div>
+    <div class="stat-card warn"><div class="stat-label">Pending Orders</div><div class="stat-value" id="s-pending-orders">0</div></div>
+    <div class="stat-card"><div class="stat-label">Inquiries</div><div class="stat-value" id="s-bookings">0</div></div>
+    <div class="stat-card warn"><div class="stat-label">Pending Inquiries</div><div class="stat-value" id="s-pending-bookings">0</div></div>
+    <div class="stat-card"><div class="stat-label">Revenue (pipeline)</div><div class="stat-value" id="s-revenue">$0</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="orders" onclick="switchTab('orders')">Orders</button>
+    <button class="tab" data-tab="bookings" onclick="switchTab('bookings')">Inquiries</button>
+  </div>
+
+  <div id="tab-orders">
+    <table class="admin">
+      <thead><tr><th>#</th><th>Customer</th><th>Contact</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead>
+      <tbody id="orders-body"></tbody>
+    </table>
+  </div>
+
+  <div id="tab-bookings" style="display:none;">
+    <table class="admin">
+      <thead><tr><th>#</th><th>Name</th><th>Contact</th><th>Interest</th><th>Status</th><th>Date</th><th></th></tr></thead>
+      <tbody id="bookings-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="detail-modal" class="modal detail-modal">
+  <div class="modal-card">
+    <div class="modal-head"><span id="detail-title">Details</span><button class="x" onclick="closeDetail()">×</button></div>
+    <div class="detail-body" id="detail-body"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+const ORDER_STATUSES = ["pending","confirmed","shipped","completed","cancelled"];
+const BOOKING_STATUSES = ["pending","contacted","completed","cancelled"];
+let AUTH = null;
+
+function refreshThemeLabel(){
+  var isLight = document.documentElement.getAttribute("data-theme") === "light";
+  var b = document.getElementById("theme-toggle");
+  if (b) b.textContent = isLight ? "Dark" : "Light";
+}
+function toggleTheme(){
+  var isLight = document.documentElement.getAttribute("data-theme") === "light";
+  if (isLight){ document.documentElement.removeAttribute("data-theme"); try{localStorage.setItem("hfsc_theme","dark");}catch(e){} }
+  else { document.documentElement.setAttribute("data-theme","light"); try{localStorage.setItem("hfsc_theme","light");}catch(e){} }
+  refreshThemeLabel();
+}
+
+function authHeader() { return "Basic " + btoa(AUTH.u + ":" + AUTH.p); }
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function money(n){return "$"+Number(n||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtDate(s){ if(!s) return "—"; const d=new Date(s); return isNaN(d)?s:d.toLocaleString("en-US",{month:"short",day:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
+
+async function api(path, opts={}) {
+  opts.headers = Object.assign({ "Authorization": authHeader() }, opts.headers || {});
+  const res = await fetch("/api/admin" + path, opts);
+  if (res.status === 401) { throw new Error("unauthorized"); }
+  if (res.status === 204) return null;
+  if (!res.ok) throw new Error("status " + res.status);
+  return res.json();
+}
+
+async function login(e) {
+  e.preventDefault();
+  const u = document.getElementById("login-user").value;
+  const p = document.getElementById("login-pass").value;
+  AUTH = { u, p };
+  try {
+    await api("/stats");
+    sessionStorage.setItem("hfsc_admin", JSON.stringify(AUTH));
+    showDashboard();
+  } catch (err) {
+    AUTH = null;
+    document.getElementById("login-error").style.display = "block";
+  }
+}
+function logout() { AUTH = null; sessionStorage.removeItem("hfsc_admin"); location.reload(); }
+
+function showDashboard() {
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("logout-btn").style.display = "inline-block";
+  loadAll();
+}
+
+async function loadAll() {
+  try {
+    const stats = await api("/stats");
+    document.getElementById("s-orders").textContent = stats.orders;
+    document.getElementById("s-pending-orders").textContent = stats.pending_orders;
+    document.getElementById("s-bookings").textContent = stats.bookings;
+    document.getElementById("s-pending-bookings").textContent = stats.pending_bookings;
+    document.getElementById("s-revenue").textContent = money(stats.revenue);
+    renderOrders(await api("/orders"));
+    renderBookings(await api("/bookings"));
+  } catch (err) { logout(); }
+}
+
+function statusSelect(current, statuses, onchangeCall) {
+  return `<select onchange="${onchangeCall}">` +
+    statuses.map(s => `<option ${s===current?"selected":""}>${s}</option>`).join("") + `</select>`;
+}
+
+function renderOrders(orders) {
+  const body = document.getElementById("orders-body");
+  if (!orders.length) { body.innerHTML = `<tr><td colspan="7" class="empty-row">No orders yet.</td></tr>`; return; }
+  body.innerHTML = orders.map(o => `
+    <tr>
+      <td>#${o.id}</td>
+      <td>${esc(o.first_name)} ${esc(o.last_name)}</td>
+      <td>${esc(o.phone)}<br><span class="muted">${esc(o.email)}</span></td>
+      <td>${money(o.total)}</td>
+      <td><span class="pill ${esc(o.status)}">${esc(o.status)}</span></td>
+      <td>${fmtDate(o.created_at)}</td>
+      <td><div class="row-actions">
+        ${statusSelect(o.status, ORDER_STATUSES, `setOrderStatus(${o.id}, this.value)`)}
+        <button class="mini-btn" onclick="viewOrder(${o.id})">View</button>
+        <button class="mini-btn danger" onclick="delOrder(${o.id})">✕</button>
+      </div></td>
+    </tr>`).join("");
+}
+
+function renderBookings(bookings) {
+  const body = document.getElementById("bookings-body");
+  if (!bookings.length) { body.innerHTML = `<tr><td colspan="7" class="empty-row">No inquiries yet.</td></tr>`; return; }
+  body.innerHTML = bookings.map(b => `
+    <tr>
+      <td>#${b.id}</td>
+      <td>${esc(b.first_name)} ${esc(b.last_name)}</td>
+      <td>${esc(b.phone)}<br><span class="muted">${esc(b.email)}</span></td>
+      <td>${esc(b.product_interest || b.service || "—")}</td>
+      <td><span class="pill ${esc(b.status)}">${esc(b.status)}</span></td>
+      <td>${fmtDate(b.created_at)}</td>
+      <td><div class="row-actions">
+        ${statusSelect(b.status, BOOKING_STATUSES, `setBookingStatus(${b.id}, this.value)`)}
+        <button class="mini-btn" onclick="viewBooking(${b.id})">View</button>
+        <button class="mini-btn danger" onclick="delBooking(${b.id})">✕</button>
+      </div></td>
+    </tr>`).join("");
+}
+
+async function setOrderStatus(id, status) {
+  try { await api(`/orders/${id}`, { method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({status}) });
+    showToast("Order #"+id+" → "+status, "success"); loadAll(); } catch(e){ showToast("Update failed","error"); }
+}
+async function setBookingStatus(id, status) {
+  try { await api(`/bookings/${id}`, { method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({status}) });
+    showToast("Inquiry #"+id+" → "+status, "success"); loadAll(); } catch(e){ showToast("Update failed","error"); }
+}
+async function delOrder(id) {
+  if (!confirm("Delete order #"+id+"?")) return;
+  try { await api(`/orders/${id}`, {method:"DELETE"}); showToast("Order deleted","success"); loadAll(); } catch(e){ showToast("Delete failed","error"); }
+}
+async function delBooking(id) {
+  if (!confirm("Delete inquiry #"+id+"?")) return;
+  try { await api(`/bookings/${id}`, {method:"DELETE"}); showToast("Inquiry deleted","success"); loadAll(); } catch(e){ showToast("Delete failed","error"); }
+}
+
+async function viewOrder(id) {
+  const o = await api(`/orders/${id}`);
+  const items = (o.items || []).map(i => `<tr><td>${esc(i.name)} ${i.model_number?("· "+esc(i.model_number)):""}</td><td>${i.quantity} × ${money(i.unit_price)}</td></tr>`).join("");
+  document.getElementById("detail-title").textContent = "Order #" + o.id;
+  document.getElementById("detail-body").innerHTML = `
+    <table>
+      <tr><td>Name</td><td>${esc(o.first_name)} ${esc(o.last_name)}</td></tr>
+      <tr><td>Phone</td><td>${esc(o.phone)}</td></tr>
+      <tr><td>Email</td><td>${esc(o.email)}</td></tr>
+      <tr><td>Company</td><td>${esc(o.company)||"—"}</td></tr>
+      <tr><td>Address</td><td>${esc(o.address)||"—"}, ${esc(o.city)||""} ${esc(o.state)||""} ${esc(o.zip)||""} ${esc(o.country)||""}</td></tr>
+      <tr><td>Freight Region</td><td>${esc(o.freight_region)||"—"}</td></tr>
+      <tr><td>Contact Pref</td><td>${esc(o.contact_pref)||"—"} (${esc(o.best_time)||"—"})</td></tr>
+      <tr><td>Notes</td><td>${esc(o.notes)||"—"}</td></tr>
+      <tr><td>Payment Method</td><td>${esc(o.payment_method)||"—"}</td></tr>
+      <tr><td>Status</td><td><span class="pill ${esc(o.status)}">${esc(o.status)}</span></td></tr>
+    </table>
+    <h3 style="margin:14px 0 6px;font-size:1rem;">Items</h3>
+    <table>${items}<tr><td><strong>Total</strong></td><td><strong>${money(o.total)}</strong></td></tr></table>`;
+  document.getElementById("detail-modal").classList.add("open");
+}
+async function viewBooking(id) {
+  const b = await api(`/bookings/${id}`);
+  document.getElementById("detail-title").textContent = "Inquiry #" + b.id;
+  document.getElementById("detail-body").innerHTML = `
+    <table>
+      <tr><td>Name</td><td>${esc(b.first_name)} ${esc(b.last_name)}</td></tr>
+      <tr><td>Phone</td><td>${esc(b.phone)}</td></tr>
+      <tr><td>Email</td><td>${esc(b.email)}</td></tr>
+      <tr><td>Service</td><td>${esc(b.service)||"—"}</td></tr>
+      <tr><td>Product Interest</td><td>${esc(b.product_interest)||"—"}</td></tr>
+      <tr><td>Details</td><td>${esc(b.details)||"—"}</td></tr>
+      <tr><td>Status</td><td><span class="pill ${esc(b.status)}">${esc(b.status)}</span></td></tr>
+    </table>`;
+  document.getElementById("detail-modal").classList.add("open");
+}
+function closeDetail(){ document.getElementById("detail-modal").classList.remove("open"); }
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+  document.getElementById("tab-orders").style.display = tab === "orders" ? "block" : "none";
+  document.getElementById("tab-bookings").style.display = tab === "bookings" ? "block" : "none";
+}
+
+function showToast(msg, type) {
+  const c = document.getElementById("toast-container"); if (!c) return;
+  const t = document.createElement("div"); t.className = "toast " + (type||"success"); t.textContent = msg;
+  c.appendChild(t); setTimeout(()=>{ t.classList.add("fade"); setTimeout(()=>t.remove(),400); }, 3000);
+}
+
+// Restore session
+(function(){
+  refreshThemeLabel();
+  const saved = sessionStorage.getItem("hfsc_admin");
+  if (saved) { try { AUTH = JSON.parse(saved); showDashboard(); } catch(e){} }
+  const dm = document.getElementById("detail-modal");
+  dm.addEventListener("click", e => { if (e.target === dm) closeDetail(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Contact Us — {{ business.name }}{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">We're Here To Help</span>
+    <h1>Contact Us</h1>
+    <p class="muted">Questions about gear, an order, financing, or shipping? Reach out and a
+      real person on our team will get back to you fast.</p>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="contact-page-grid">
+    <!-- Info -->
+    <div>
+      <h2>Get In Touch</h2>
+      <div class="contact-lines">
+        <div class="contact-line"><span class="cl-label">Phone</span><a href="tel:{{ business.phone }}">{{ business.phone_display }}</a></div>
+                <div class="contact-line"><span class="cl-label">Email</span><a href="mailto:{{ business.email }}">{{ business.email }}</a></div>
+        <div class="contact-line"><span class="cl-label">Address</span><span>{{ business.address }}</span></div>
+        <div class="contact-line"><span class="cl-label">Hours</span><span>Mon–Sat: 8AM–6PM CST</span></div>
+      </div>
+      <div class="contact-note">
+        <strong>Ships nationwide.</strong> Tell us what you need and we'll confirm
+        availability, arrange shipping, and walk you through payment.
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="contact-form-card reveal">
+      <h2>Send Us A Message</h2>
+      <form id="contact-form" onsubmit="submitContact(event)">
+        <div id="contact-success" class="quote-success" style="display:none;">
+          Thanks — your message is in. We'll be in touch within a few hours.<br>
+          Need us now? Call <strong>{{ business.phone_display }}</strong>.
+        </div>
+        <div id="contact-fields">
+          <div class="f-row">
+            <label>First Name *<input name="first_name" required></label>
+            <label>Last Name *<input name="last_name" required></label>
+          </div>
+          <div class="f-row">
+            <label>Phone *<input name="phone" required></label>
+            <label>Email *<input name="email" type="email" required></label>
+          </div>
+          <label>Product or Topic<input name="product_interest" placeholder="e.g. Minn Kota Ultrex, financing, shipping…"></label>
+          <label>Message *<textarea name="details" rows="4" required></textarea></label>
+          <button type="submit" class="btn-primary btn-block">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script>
+async function submitContact(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const payload = {
+    first_name: fd.get("first_name"), last_name: fd.get("last_name"),
+    phone: fd.get("phone"), email: fd.get("email"),
+    product_interest: fd.get("product_interest") || null,
+    details: fd.get("details") || null, service: "Contact Form",
+  };
+  try {
+    const res = await fetch("/api/bookings/", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error("bad status");
+    document.getElementById("contact-fields").style.display = "none";
+    document.getElementById("contact-success").style.display = "block";
+    showToast("Message sent — we'll be in touch!", "success");
+  } catch (err) {
+    showToast("Could not send. Call us at {{ business.phone_display }}", "error");
+  }
+}
+</script>
+{% endblock %}

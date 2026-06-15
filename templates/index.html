@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% from "_card.html" import product_card %}
+{% block content %}
+
+<!-- SECTION 1 — HERO -->
+<section class="hero">
+ <div class="wrap hero-inner">
+ <div class="hero-left">
+ <span class="hero-pill"><span class="dot"></span>America's Premier Outdoor Gear Store</span>
+ <h1 class="hero-h1">HUNT. FISH.<br><span>GEAR UP.</span></h1>
+ <p class="hero-sub">Premium trolling motors, fish finders, hunting blinds, thermal optics,
+ ammo &amp; more — direct sourced, shipped nationwide.</p>
+ <div class="hero-btns">
+ <a href="/products" class="btn-primary">Shop All Gear →</a>
+ <button class="btn-outline" onclick="openQuoteModal('')">Get a Quote</button>
+ </div>
+ <div class="hero-stats">
+ <div><strong>{{ total_count }}+</strong><span>Products</span></div>
+ <div><strong>12</strong><span>Categories</span></div>
+ <div><strong>50</strong><span>States</span></div>
+ <div><strong>24/7</strong><span>Support</span></div>
+ </div>
+ </div>
+ <div class="hero-right">
+ {% for p in featured[:3] %}
+ <a href="/products/{{ p.slug }}" class="hero-card {% if loop.first %}hero-card-wide{% endif %}">
+ <img src="{{ p.image }}" alt="{{ p.name }}" onerror="this.src='/static/images/placeholder.jpg'">
+ <div class="hero-card-body">
+ <span class="card-brand">{{ p.brand }}</span>
+ <span class="hero-card-name">{{ p.name }}</span>
+ <span class="card-price">${{ "%.0f"|format(p.price) }}</span>
+ </div>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+</section>
+
+<!-- SECTION 2 — BRAND PILLS -->
+<section class="wrap brands-section">
+ <div class="eyebrow reveal">Top Brands We Carry</div>
+ <div class="brand-row reveal">
+ {% for brand, count in brand_counts.items() %}
+ {% if count >= 2 %}
+ <a href="/products?q={{ brand }}" class="brand-pill">{{ brand }}<span>{{ count }}</span></a>
+ {% endif %}
+ {% endfor %}
+ </div>
+</section>
+
+<!-- SECTION 3 — FEATURED -->
+<section class="wrap section">
+ <div class="eyebrow center">Handpicked Selection</div>
+ <div class="section-head reveal"><h2>Featured Gear</h2><a href="/products" class="muted">View all →</a></div>
+ <div class="product-grid reveal">
+ {% for p in featured %}{{ product_card(p) }}{% endfor %}
+ </div>
+</section>
+
+<!-- SECTION 4 — SHOP BY CATEGORY -->
+<section class="cat-section">
+ <div class="wrap">
+ <div class="section-head reveal"><h2>Shop By Category</h2></div>
+ <div class="cat-grid">
+ {% for slug, label in category_labels.items() %}
+ <a href="/products?category={{ slug }}" class="cat-tile reveal stagger-{{ loop.index0 % 4 + 1 }}">
+ 
+ <span class="cat-name">{{ label }}</span>
+ <span class="cat-count">{{ category_counts.get(slug, 0) }} products</span>
+ </a>
+ {% endfor %}
+ </div>
+ </div>
+</section>
+
+<!-- SECTION 5 — WHY CHOOSE US -->
+<section class="wrap section">
+ <div class="section-head reveal"><h2>Why Choose Us</h2></div>
+ <div class="why-grid">
+ <div class="why-card reveal stagger-1"><h3>Lowest Prices</h3><p>Direct sourcing from overstock and closeouts.</p></div>
+ <div class="why-card reveal stagger-2"><h3>All Major Brands</h3><p>Minn Kota, Humminbird, Garmin, Pulsar, Vortex and more.</p></div>
+ <div class="why-card reveal stagger-3"><h3>Financing Available</h3><p>Flexible plans — contact us for details.</p></div>
+ <div class="why-card reveal stagger-4"><h3>Personal Support</h3><p>Call or email — real people, fast answers.</p></div>
+ </div>
+</section>
+
+<!-- SECTION 6 — CTA STRIP -->
+<section class="cta-strip">
+ <div class="wrap center reveal">
+ <h2>Ready To Gear Up?</h2>
+ <p>Call or email — tell us what you need and we'll source, price, and ship it straight to your door.</p>
+ <div class="cta-btns">
+ <a href="tel:{{ business.phone }}" class="btn-primary">Call {{ business.phone_display }}</a>
+ <button class="btn-outline" onclick="openQuoteModal('')">Get a Quote</button>
+ </div>
+ </div>
+</section>
+
+{% endblock %}

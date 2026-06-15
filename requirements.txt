@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+aiosmtplib
+python-multipart
+python-dotenv
+jinja2
+pillow

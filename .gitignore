@@ -1,0 +1,27 @@
+# ── Secrets (NEVER commit) ──
+.env
+*.env
+!.env.example
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ── Database (auto-created & seeded from seed_data.py on startup) ──
+*.db
+outdoor.db
+
+# ── Logs ──
+*.log
+
+# ── OS / editor ──
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

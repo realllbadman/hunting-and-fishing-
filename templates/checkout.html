@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Checkout — {{ business.name }}{% endblock %}
+{% block content %}
+
+<section class="wrap section">
+ <div class="page-head"><h1>Checkout</h1></div>
+
+ <div class="checkout-layout">
+ <!-- LEFT — Order Summary -->
+ <aside class="checkout-summary">
+ <h2>Order Summary</h2>
+ <div id="checkout-items"></div>
+ <div id="checkout-empty" class="cart-empty" style="display:none;">
+ Your cart is empty. <a href="/products" style="color:var(--accent);">Browse gear →</a>
+ </div>
+ <div class="checkout-totals">
+ <div class="cart-line"><span>Subtotal</span><span id="co-subtotal">$0.00</span></div>
+ <div class="cart-line"><span>Shipping</span><span id="co-shipping">—</span></div>
+ <div class="cart-line cart-total"><span>Total</span><span id="co-total">$0.00</span></div>
+ </div>
+ </aside>
+
+ <!-- RIGHT — Customer Form -->
+ <div class="checkout-form-wrap">
+ <h2>Your Details</h2>
+ <form id="order-form" onsubmit="submitOrder(event)">
+ <div class="f-row">
+ <label>First Name *<input name="first_name" required></label>
+ <label>Last Name *<input name="last_name" required></label>
+ </div>
+ <div class="f-row">
+ <label>Phone *<input name="phone" required></label>
+ <label>Email *<input name="email" type="email" required></label>
+ </div>
+ <label>Company (optional)<input name="company"></label>
+ <label>Delivery Address<textarea name="address" rows="2"></textarea></label>
+ <div class="f-row f-row-3">
+ <label>State<select name="state" id="co-state"><option value="">Select state</option></select></label>
+ <label>City<select name="city" id="co-city"><option value="">Select state first</option></select></label>
+ <label>ZIP<input name="zip"></label>
+ </div>
+ <label id="co-city-other-wrap" style="display:none;">Enter your city *<input name="city_other" placeholder="Your city"></label>
+ <label>Country<input name="country" value="USA"></label>
+ <label>International Freight Region
+ <select name="freight_region">
+ <option>Domestic (USA)</option>
+ <option>Canada/Mexico</option>
+ <option>Caribbean/Central America</option>
+ <option>South America</option>
+ <option>Europe</option>
+ <option>Middle East/North Africa</option>
+ <option>Sub-Saharan Africa</option>
+ <option>Asia Pacific</option>
+ <option>Australia/New Zealand</option>
+ <option>Other</option>
+ </select>
+ </label>
+ <label>Contact Preference</label>
+ <p class="field-hint">Let us know how you'd prefer our team to reach out about your order.</p>
+ <div class="radio-row">
+ <label class="radio"><input type="radio" name="contact_pref" value="Phone Call" checked>Phone Call</label>
+ <label class="radio"><input type="radio" name="contact_pref" value="Text">Text (SMS)</label>
+ <label class="radio"><input type="radio" name="contact_pref" value="Email">Email</label>
+  </div>
+ <label>Best Time to Reach You
+ <select name="best_time">
+ <option>Morning (8AM-12PM)</option>
+ <option>Afternoon (12PM-5PM)</option>
+ <option>Evening (5PM-8PM)</option>
+ </select>
+ </label>
+ <label>Additional Notes (optional)<textarea name="notes" rows="2"></textarea></label>
+
+ <label>Payment Method *</label>
+ <div class="pay-grid" id="pay-grid">
+ <label class="pay-tile selected"><input type="radio" name="payment_method" value="Bank Transfer (ACH/Wire)" checked><span class="pay-name">Bank Transfer</span><span class="pay-sub">ACH / Wire</span></label>
+ <label class="pay-tile"><input type="radio" name="payment_method" value="Zelle"><span class="pay-name">Zelle</span><span class="pay-sub">Fast &amp; free</span></label>
+ <label class="pay-tile"><input type="radio" name="payment_method" value="PayPal"><span class="pay-name">PayPal</span><span class="pay-sub">Buyer protection</span></label>
+ <label class="pay-tile"><input type="radio" name="payment_method" value="Other"><span class="pay-name">Other</span><span class="pay-sub">Tell us below</span></label>
+ </div>
+ <label id="pay-other-wrap" style="display:none;">Specify payment method *
+ <input name="payment_other" placeholder="e.g. Cash App, cashier's check…">
+ </label>
+
+ <button type="submit" id="place-order-btn" class="btn-primary btn-block">Place Order →</button>
+ <div id="order-error" class="order-error" style="display:none;"></div>
+ </form>
+
+ <!-- Success state -->
+ <div id="order-success" class="order-success" style="display:none;">
+ 
+ <h2>Order Received!</h2>
+ <p id="order-success-msg"></p>
+ <a href="/products" class="btn-primary">Continue Shopping</a>
+ </div>
+ </div>
+ </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script>
+const US_STATES = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Washington, D.C."];
+const STATE_CITIES = {"Alabama": ["Birmingham", "Montgomery", "Mobile", "Huntsville", "Tuscaloosa", "Auburn"], "Alaska": ["Anchorage", "Fairbanks", "Juneau", "Wasilla", "Sitka"], "Arizona": ["Phoenix", "Tucson", "Mesa", "Scottsdale", "Chandler", "Glendale", "Tempe", "Flagstaff"], "Arkansas": ["Little Rock", "Fayetteville", "Fort Smith", "Springdale", "Jonesboro"], "California": ["Los Angeles", "San Diego", "San Jose", "San Francisco", "Fresno", "Sacramento", "Long Beach", "Oakland", "Bakersfield", "Anaheim"], "Colorado": ["Denver", "Colorado Springs", "Aurora", "Fort Collins", "Boulder", "Pueblo"], "Connecticut": ["Bridgeport", "New Haven", "Hartford", "Stamford", "Waterbury", "Norwalk"], "Delaware": ["Wilmington", "Dover", "Newark", "Middletown"], "Florida": ["Jacksonville", "Miami", "Tampa", "Orlando", "St. Petersburg", "Tallahassee", "Fort Lauderdale", "Cape Coral"], "Georgia": ["Atlanta", "Augusta", "Columbus", "Savannah", "Athens", "Macon"], "Hawaii": ["Honolulu", "Hilo", "Kailua", "Kaneohe", "Waipahu"], "Idaho": ["Boise", "Meridian", "Nampa", "Idaho Falls", "Pocatello", "Coeur d'Alene"], "Illinois": ["Chicago", "Aurora", "Naperville", "Joliet", "Rockford", "Springfield", "Peoria"], "Indiana": ["Indianapolis", "Fort Wayne", "Evansville", "South Bend", "Carmel", "Bloomington"], "Iowa": ["Des Moines", "Cedar Rapids", "Davenport", "Sioux City", "Iowa City"], "Kansas": ["Wichita", "Overland Park", "Kansas City", "Topeka", "Olathe", "Lawrence"], "Kentucky": ["Louisville", "Lexington", "Bowling Green", "Owensboro", "Covington"], "Louisiana": ["New Orleans", "Baton Rouge", "Shreveport", "Lafayette", "Lake Charles"], "Maine": ["Portland", "Lewiston", "Bangor", "Augusta", "Auburn"], "Maryland": ["Baltimore", "Columbia", "Germantown", "Silver Spring", "Annapolis", "Frederick"], "Massachusetts": ["Boston", "Worcester", "Springfield", "Cambridge", "Lowell", "Quincy"], "Michigan": ["Detroit", "Grand Rapids", "Warren", "Ann Arbor", "Lansing", "Flint"], "Minnesota": ["Minneapolis", "St. Paul", "Rochester", "Duluth", "Bloomington"], "Mississippi": ["Jackson", "Gulfport", "Southaven", "Hattiesburg", "Biloxi"], "Missouri": ["Kansas City", "St. Louis", "Springfield", "Columbia", "Independence"], "Montana": ["Billings", "Missoula", "Great Falls", "Bozeman", "Helena", "Kalispell"], "Nebraska": ["Omaha", "Lincoln", "Bellevue", "Grand Island", "Kearney"], "Nevada": ["Las Vegas", "Henderson", "Reno", "North Las Vegas", "Sparks", "Carson City"], "New Hampshire": ["Manchester", "Nashua", "Concord", "Dover", "Portsmouth"], "New Jersey": ["Newark", "Jersey City", "Paterson", "Trenton", "Elizabeth", "Edison"], "New Mexico": ["Albuquerque", "Las Cruces", "Santa Fe", "Rio Rancho", "Roswell"], "New York": ["New York City", "Buffalo", "Rochester", "Yonkers", "Syracuse", "Albany"], "North Carolina": ["Charlotte", "Raleigh", "Greensboro", "Durham", "Winston-Salem", "Fayetteville", "Asheville"], "North Dakota": ["Fargo", "Bismarck", "Grand Forks", "Minot", "Williston"], "Ohio": ["Columbus", "Cleveland", "Cincinnati", "Toledo", "Akron", "Dayton"], "Oklahoma": ["Oklahoma City", "Tulsa", "Norman", "Broken Arrow", "Edmond", "Lawton"], "Oregon": ["Portland", "Salem", "Eugene", "Gresham", "Bend", "Medford"], "Pennsylvania": ["Philadelphia", "Pittsburgh", "Allentown", "Erie", "Harrisburg", "Scranton"], "Rhode Island": ["Providence", "Warwick", "Cranston", "Pawtucket", "Newport"], "South Carolina": ["Charleston", "Columbia", "Greenville", "Mount Pleasant", "Myrtle Beach", "Spartanburg"], "South Dakota": ["Sioux Falls", "Rapid City", "Aberdeen", "Brookings", "Pierre"], "Tennessee": ["Nashville", "Memphis", "Knoxville", "Chattanooga", "Clarksville", "Murfreesboro"], "Texas": ["Houston", "San Antonio", "Dallas", "Austin", "Fort Worth", "El Paso", "Arlington", "Corpus Christi", "Lubbock"], "Utah": ["Salt Lake City", "West Valley City", "Provo", "Ogden", "St. George", "Park City"], "Vermont": ["Burlington", "Montpelier", "Rutland", "Barre", "Brattleboro"], "Virginia": ["Virginia Beach", "Norfolk", "Richmond", "Arlington", "Chesapeake", "Alexandria", "Roanoke"], "Washington": ["Seattle", "Spokane", "Tacoma", "Vancouver", "Bellevue", "Olympia", "Everett"], "West Virginia": ["Charleston", "Huntington", "Morgantown", "Parkersburg", "Wheeling"], "Wisconsin": ["Milwaukee", "Madison", "Green Bay", "Kenosha", "Racine", "Appleton"], "Wyoming": ["Cheyenne", "Casper", "Laramie", "Gillette", "Jackson", "Sheridan"], "Washington, D.C.": ["Washington"]};
+document.addEventListener("DOMContentLoaded", function () {
+  const stateSel = document.getElementById("co-state");
+  const citySel = document.getElementById("co-city");
+  const cityOtherWrap = document.getElementById("co-city-other-wrap");
+  US_STATES.forEach(function (st) {
+    const o = document.createElement("option"); o.value = st; o.textContent = st; stateSel.appendChild(o);
+  });
+  function fillCities() {
+    const cities = STATE_CITIES[stateSel.value] || [];
+    citySel.innerHTML = "";
+    const ph = document.createElement("option");
+    ph.value = ""; ph.textContent = stateSel.value ? "Select city" : "Select state first";
+    citySel.appendChild(ph);
+    cities.forEach(function (c) {
+      const o = document.createElement("option"); o.value = c; o.textContent = c; citySel.appendChild(o);
+    });
+    if (stateSel.value) {
+      const oth = document.createElement("option"); oth.value = "Other"; oth.textContent = "Other (enter below)"; citySel.appendChild(oth);
+    }
+    cityOtherWrap.style.display = "none";
+  }
+  stateSel.addEventListener("change", fillCities);
+  citySel.addEventListener("change", function () {
+    cityOtherWrap.style.display = (citySel.value === "Other") ? "block" : "none";
+  });
+  const freight = document.querySelector('[name="freight_region"]');
+  if (freight) freight.addEventListener("change", renderCheckout);
+  renderCheckout();
+});
+</script>
+{% endblock %}

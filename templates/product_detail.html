@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% from "_card.html" import product_card %}
+{% block title %}{{ product.name }} — {{ business.name }}{% endblock %}
+{% block description %}{{ product.short_description if product.short_description is defined else product.description[:150] }}{% endblock %}
+{% block content %}
+
+<section class="wrap section">
+ <nav class="breadcrumb">
+ <a href="/">Home</a> &nbsp;/&nbsp;
+ <a href="/products?category={{ product.category }}">{{ category_labels.get(product.category, product.category) }}</a> &nbsp;/&nbsp;
+ <span>{{ product.name }}</span>
+ </nav>
+
+ <div class="pd-layout">
+ <!-- Image -->
+ <div class="pd-image">
+ <img src="{{ product.image or '/static/images/placeholder.jpg' }}" alt="{{ product.name }}"
+ onerror="this.src='/static/images/placeholder.jpg'">
+ {% if product.badge %}<span class="card-badge {% if product.badge == 'New' %}badge-new{% elif product.badge == 'Hot Deal' %}badge-hot{% endif %} pd-badge">{{ product.badge }}</span>{% endif %}
+ {% if not product.in_stock %}<div class="card-oos-overlay">Out of Stock</div>{% endif %}
+ </div>
+
+ <!-- Info -->
+ <div class="pd-info">
+ <div class="card-brand">{{ product.brand }}</div>
+ <h1 class="pd-name">{{ product.name }}</h1>
+ {% if product.model_number %}<div class="pd-model">{{ product.model_number }}</div>{% endif %}
+
+ <div class="pd-price-block">
+ {% if product.price_max %}
+ <span class="pd-price">${{ "%.0f"|format(product.price) }} – ${{ "%.0f"|format(product.price_max) }}</span>
+ {% else %}
+ <span class="pd-price">${{ "%.0f"|format(product.price) }}</span>
+ {% if product.original_price %}
+ <span class="pd-orig">${{ "%.0f"|format(product.original_price) }}</span>
+ <span class="pd-save">Save ${{ "%.0f"|format(product.original_price - product.price) }}</span>
+ {% endif %}
+ {% endif %}
+ </div>
+
+ {% if product.in_stock %}
+ <div class="pd-stock ok">In Stock</div>
+ {% else %}
+ <div class="pd-stock out">Out of Stock</div>
+ {% endif %}
+
+ <div class="pd-finance">As low as ${{ "%.0f"|format(product.price / 12) }}/mo — <a href="/financing" style="color:var(--accent);">apply for financing</a></div>
+
+ {% if features %}
+ <ul class="pd-features">
+ {% for f in features %}<li>{{ f }}</li>{% endfor %}
+ </ul>
+ {% endif %}
+
+ <div class="pd-actions">
+ <button class="btn-primary btn-cart-sm pd-add {% if not product.in_stock %}btn-disabled{% endif %}"
+ {% if not product.in_stock %}disabled{% endif %}
+ data-slug="{{ product.slug }}" data-name="{{ product.name }}"
+ data-price="{{ product.price }}" data-image="{{ product.image or '/static/images/placeholder.jpg' }}"
+ data-model="{{ product.model_number or '' }}">
+ {% if product.in_stock %}Add to Cart{% else %}Out of Stock{% endif %}
+ </button>
+ <button class="btn-outline btn-block" onclick="openQuoteModal('{{ product.name | replace("'", " ") }}')">Request a Quote</button>
+ </div>
+
+ <div class="pd-contact">
+ <strong>Questions? Our team is here to help.</strong>
+ <span>{{ business.phone_display }}</span>
+ <span>WhatsApp: {{ business.whatsapp }}</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Description + specs -->
+ <div class="pd-detail-grid reveal">
+ <div class="pd-desc">
+ <h2>Description</h2>
+ <p>{{ product.description }}</p>
+ </div>
+ <div class="pd-specs">
+ <h2>Specifications</h2>
+ <table>
+ <tr><td>Brand</td><td>{{ product.brand }}</td></tr>
+ <tr><td>Category</td><td>{{ category_labels.get(product.category, product.category) }}</td></tr>
+ {% if product.model_number %}<tr><td>Model</td><td>{{ product.model_number }}</td></tr>{% endif %}
+ {% if product.subcategory %}<tr><td>Type</td><td>{{ product.subcategory | capitalize }}</td></tr>{% endif %}
+ <tr><td>Availability</td><td>{{ 'In Stock' if product.in_stock else 'Out of Stock' }}</td></tr>
+ </table>
+ </div>
+ </div>
+
+ {% if related %}
+ <div class="section-head" style="margin-top:40px;"><h2>You Might Also Like</h2></div>
+ <div class="product-grid">
+ {% for p in related %}{{ product_card(p) }}{% endfor %}
+ </div>
+ {% endif %}
+</section>
+
+{% endblock %}

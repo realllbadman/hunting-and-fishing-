@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <script>(function(){try{if(localStorage.getItem('hfsc_theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+ <title>{% block title %}{{ business.name }} — Hunt. Fish. Gear Up.{% endblock %}</title>
+ <meta name="description" content="{% block description %}{{ business.name }} — premium trolling motors, fish finders, hunting blinds, thermal optics, ammo and more. Shipped nationwide from Memphis, TN.{% endblock %}">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="/static/css/main.css?v=19">
+</head>
+<body>
+
+<!-- ════ BAR 1 — ANNOUNCEMENT ════ -->
+<div class="bar-announce">
+ <div class="wrap announce-inner">
+ <span class="announce-left">FREE SHIPPING on orders over $2,000</span>
+ <span class="announce-center">{{ business.phone_display }} &nbsp;|&nbsp; {{ business.email }}</span>
+ <a class="announce-right" href="/financing">Financing Available — Apply Now</a>
+ </div>
+</div>
+
+<!-- ════ BAR 2 — MAIN NAV ════ -->
+<header class="bar-nav">
+ <div class="wrap nav-inner">
+ <button id="hamburger" class="hamburger" aria-label="Menu">☰</button>
+ <a href="/" class="logo">
+ <img class="logo-emblem" src="/static/images/logo.png" alt="Hunting &amp; Fishing Supply Co"
+ onerror="this.style.display='none'">
+ <span class="logo-text">
+ <span class="logo-1">Hunting &amp; Fishing</span>
+ <span class="logo-2">Supply Co</span>
+ <span class="logo-tag">Hunt. Fish. Gear Up.</span>
+ </span>
+ </a>
+
+ <nav class="mega-nav">
+ <a href="/products">Shop All</a>
+ <div class="mega">
+ <a href="/products?category=trolling-motors" class="mega-trigger">Trolling Motors ▾</a>
+ <div class="mega-panel">
+ <a href="/products?category=trolling-motors">Freshwater Motors</a>
+ <a href="/products?category=trolling-motors">Saltwater / Riptide</a>
+ <a href="/products?q=Ultrex">Minn Kota Ultrex</a>
+ <a href="/products?q=Terrova">Minn Kota Terrova</a>
+ <a href="/products?q=Ghost">Lowrance Ghost</a>
+ <a href="/products?q=Xi5">MotorGuide Xi5</a>
+ </div>
+ </div>
+ <div class="mega">
+ <a href="/products?category=hunting-blinds" class="mega-trigger">Hunting ▾</a>
+ <div class="mega-panel">
+ <a href="/products?category=hunting-blinds">Hunting Blinds</a>
+ <a href="/products?category=thermal-night-vision">Thermal &amp; Night Vision</a>
+ <a href="/products?category=rifle-scopes">Rifle Scopes</a>
+ <a href="/products?category=ammo">Ammo</a>
+ <a href="/products?category=crossbows-bows">Crossbows &amp; Bows</a>
+ </div>
+ </div>
+ <div class="mega">
+ <a href="/products?category=fish-finders" class="mega-trigger">Fishing ▾</a>
+ <div class="mega-panel">
+ <a href="/products?category=fish-finders">Fish Finders</a>
+ <a href="/products?category=small-outboards">Small Outboards</a>
+ <a href="/products?category=kayaks">Kayaks</a>
+ </div>
+ </div>
+ <div class="mega">
+ <a href="/products?category=dog-kennels" class="mega-trigger">Outdoor Living ▾</a>
+ <div class="mega-panel">
+ <a href="/products?category=dog-kennels">Dog Kennels</a>
+ <a href="/products?category=chicken-coops">Chicken Coops</a>
+ <a href="/products?category=reloading-powder">Reloading Powder</a>
+ </div>
+ </div>
+ <a href="/products?badge=Sale" class="nav-deals">Deals</a>
+ <a href="/about">About</a>
+ <a href="/contact">Contact</a>
+ </nav>
+
+ <div class="nav-actions">
+ <a href="/financing" class="icon-btn" title="Financing">Financing</a>
+ <button class="icon-btn" onclick="openQuoteModal('')" title="Get a Quote">Get a Quote</button>
+ <button class="icon-btn cart-btn" data-cart-toggle title="Cart">
+ Cart <span class="cart-count-badge">0</span>
+ </button>
+ </div>
+ </div>
+</header>
+
+<!-- ════ BAR 3 — TRUST STRIP ════ -->
+<div class="bar-trust">
+ <div class="wrap trust-inner">
+ <span>Ships Nationwide</span><span>All Major Brands</span>
+ <span>Financing Available</span><span>Lowest Prices</span>
+ <span>Call &amp; Email Support</span>
+ </div>
+</div>
+
+<!-- ════ BAR 4 — CATEGORY NAV (slider) ════ -->
+<div class="bar-cat">
+ <div class="wrap cat-wrap">
+ <button class="cat-arrow cat-arrow-left" type="button" aria-label="Scroll categories left" onclick="scrollCats(-1)">‹</button>
+ <div class="cat-inner" id="cat-scroll">
+ <a href="/products">All Gear</a>
+ <a href="/products?category=trolling-motors">Trolling Motors</a>
+ <a href="/products?category=fish-finders">Fish Finders</a>
+ <a href="/products?category=small-outboards">Small Outboards</a>
+ <a href="/products?category=thermal-night-vision">Thermal &amp; NV</a>
+ <a href="/products?category=rifle-scopes">Rifle Scopes</a>
+ <a href="/products?category=hunting-blinds">Hunting Blinds</a>
+ <a href="/products?category=ammo">Ammo</a>
+ <a href="/products?category=kayaks">Kayaks</a>
+ <a href="/products?category=dog-kennels">Dog Kennels</a>
+ <a href="/products?category=crossbows-bows">Crossbows &amp; Bows</a>
+ <a href="/products?category=chicken-coops">Chicken Coops</a>
+ <a href="/products?category=reloading-powder">Reloading Powder</a>
+ </div>
+ <button class="cat-arrow cat-arrow-right" type="button" aria-label="Scroll categories right" onclick="scrollCats(1)">›</button>
+ </div>
+</div>
+
+<!-- ════ MOBILE MENU ════ -->
+<div id="mobile-menu-panel" class="mobile-menu">
+ <a href="/products">Shop All</a>
+ <a href="/products?category=trolling-motors">Trolling Motors</a>
+ <a href="/products?category=fish-finders">Fish Finders</a>
+ <a href="/products?category=small-outboards">Small Outboards</a>
+ <a href="/products?category=thermal-night-vision">Thermal &amp; Night Vision</a>
+ <a href="/products?category=rifle-scopes">Rifle Scopes</a>
+ <a href="/products?category=hunting-blinds">Hunting Blinds</a>
+ <a href="/products?category=ammo">Ammo</a>
+ <a href="/products?category=kayaks">Kayaks</a>
+ <a href="/products?category=dog-kennels">Dog Kennels</a>
+ <a href="/products?category=crossbows-bows">Crossbows &amp; Bows</a>
+ <a href="/products?category=chicken-coops">Chicken Coops</a>
+ <a href="/products?category=reloading-powder">Reloading Powder</a>
+ <a href="/about">About</a>
+ <a href="/contact">Contact</a>
+ <a href="/financing">Financing</a>
+ <div class="mobile-contact">
+ {{ business.phone_display }}<br>{{ business.email }}
+ </div>
+</div>
+
+<!-- ════ MAIN ════ -->
+<main>{% block content %}{% endblock %}</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="site-footer">
+ <div class="wrap footer-grid">
+ <div>
+ <div class="logo-1" style="color:var(--accent);font-size:1.3rem;">Hunting &amp; Fishing Supply Co</div>
+ <p class="foot-tag">Hunt. Fish. Gear Up. — Est. 2018</p>
+ <p>{{ business.address }}</p>
+ </div>
+ <div>
+ <h4>Quick Links</h4>
+ <a href="/">Home</a><a href="/products">All Products</a>
+ <a href="/about">About</a><a href="/contact">Contact</a>
+ <a href="/financing">Financing</a>
+ <a href="#" onclick="openQuoteModal('');return false;">Get a Quote</a>
+ </div>
+ <div>
+ <h4>Top Categories</h4>
+ <a href="/products?category=trolling-motors">Trolling Motors</a>
+ <a href="/products?category=fish-finders">Fish Finders</a>
+ <a href="/products?category=thermal-night-vision">Thermal &amp; NV</a>
+ <a href="/products?category=rifle-scopes">Rifle Scopes</a>
+ <a href="/products?category=hunting-blinds">Hunting Blinds</a>
+ <a href="/products?category=kayaks">Kayaks</a>
+ </div>
+ <div>
+ <h4>Contact</h4>
+ <a href="tel:{{ business.phone }}">{{ business.phone_display }}</a>
+  <a href="mailto:{{ business.email }}">{{ business.email }}</a>
+ <p>Mon–Sat: 8AM–6PM CST</p>
+ </div>
+ </div>
+ <div class="footer-bottom wrap">
+ <span>© 2018 {{ business.name }}. All rights reserved.</span>
+ <span>Shipped Nationwide · Est. 2018</span>
+ </div>
+</footer>
+
+<!-- ════ CART DRAWER ════ -->
+<div id="cart-overlay-bg" class="overlay" onclick="closeCart()"></div>
+<aside id="cart-drawer" class="cart-drawer">
+ <div class="cart-head">
+ <span>YOUR CART</span>
+ <button onclick="closeCart()" class="x">×</button>
+ </div>
+ <div id="cart-items" class="cart-body"></div>
+ <div class="cart-foot">
+ <div class="cart-line"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+ <div class="cart-line"><span>Shipping</span><span id="cart-shipping">—</span></div>
+ <div class="cart-line cart-total"><span>Total</span><span id="cart-total">$0.00</span></div>
+ <a href="/checkout" id="cart-checkout-btn" class="btn-primary btn-block">Proceed to Checkout</a>
+ <button onclick="closeCart()" class="link-btn">Continue Shopping</button>
+ </div>
+</aside>
+
+<!-- ════ QUOTE MODAL ════ -->
+<div id="quote-modal" class="modal">
+ <div class="modal-card">
+ <div class="modal-head">
+ <span>REQUEST A QUOTE</span>
+ <button onclick="closeQuoteModal()" class="x">×</button>
+ </div>
+ <form id="quote-form" onsubmit="submitQuote(event)">
+ <div id="quote-success" class="quote-success" style="display:none;">
+ Inquiry Received! We'll reach out within a few hours.<br>
+ Call anytime: <strong>{{ business.phone_display }}</strong>
+ </div>
+ <div id="quote-fields">
+ <div class="f-row">
+ <label>First Name *<input name="first_name" required></label>
+ <label>Last Name *<input name="last_name" required></label>
+ </div>
+ <div class="f-row">
+ <label>Phone *<input name="phone" required></label>
+ <label>Email *<input name="email" type="email" required></label>
+ </div>
+ <input type="hidden" id="quote-product-interest" name="product_interest">
+ <label>Message / Details<textarea name="details" rows="3"></textarea></label>
+ <button type="submit" class="btn-primary btn-block">Send Inquiry</button>
+ </div>
+ </form>
+ </div>
+</div>
+
+<!-- ════ TOAST ════ -->
+<div id="toast-container"></div>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a2fcce316a8811d4c5955c9/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+<script src="/static/js/main.js?v=5"></script>
+<script src="/static/js/animations.js?v=2"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% macro product_card(p) %}
+<div class="product-card"
+     data-name="{{ p.name | lower }}"
+     data-brand="{{ p.brand | lower }}"
+     data-category="{{ p.category }}"
+     data-badge="{{ (p.badge or '') | lower }}"
+     style="cursor:pointer"
+     onclick="(window.navTo||function(u){window.location=u})('/products/{{ p.slug }}')">
+  <div class="card-image">
+    <img src="{{ p.image or '/static/images/placeholder.jpg' }}"
+         alt="{{ p.name }}" loading="lazy"
+         onerror="this.src='/static/images/placeholder.jpg'">
+    {% if p.badge %}
+    <div class="card-badge-wrap">
+      <span class="card-badge {% if p.badge == 'New' %}badge-new{% elif p.badge == 'Hot Deal' %}badge-hot{% endif %}">{{ p.badge }}</span>
+    </div>
+    {% endif %}
+    {% if not p.in_stock %}<div class="card-oos-overlay">Out of Stock</div>{% endif %}
+  </div>
+  <div class="card-body">
+    <div class="card-brand">{{ p.brand }}</div>
+    <div class="card-name">{{ p.name }}</div>
+    {% if p.model_number %}<div class="card-model">{{ p.model_number }}</div>{% endif %}
+    <div class="card-price-row">
+      {% if p.price_max %}
+        <span class="card-price">${{ "%.0f"|format(p.price) }} – ${{ "%.0f"|format(p.price_max) }}</span>
+      {% else %}
+        <span class="card-price">${{ "%.0f"|format(p.price) }}</span>
+        {% if p.original_price %}<span class="card-orig">${{ "%.0f"|format(p.original_price) }}</span>{% endif %}
+      {% endif %}
+    </div>
+    <div class="card-btn-row">
+      <button class="btn-cart-sm {% if not p.in_stock %}btn-disabled{% endif %}"
+              onclick="event.stopPropagation(); addToCartBtn(this)"
+              {% if not p.in_stock %}disabled{% endif %}
+              data-slug="{{ p.slug }}"
+              data-name="{{ p.name }}"
+              data-price="{{ p.price }}"
+              data-image="{{ p.image or '/static/images/placeholder.jpg' }}"
+              data-model="{{ p.model_number or '' }}">
+        {% if p.in_stock %}Add to Cart{% else %}Out of Stock{% endif %}
+      </button>
+      <a href="/products/{{ p.slug }}" onclick="event.stopPropagation()" class="btn-details-sm">Details</a>
+    </div>
+    <button class="btn-quote-card" onclick="event.stopPropagation(); openQuoteModal('{{ p.name | replace("'", " ") }}')">Request a Quote</button>
+  </div>
+</div>
+{% endmacro %}

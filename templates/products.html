@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_card.html" import product_card %}
+{% block title %}{{ category_label or "All Gear" }} — {{ business.name }}{% endblock %}
+{% block content %}
+
+<section class="wrap section">
+  <div class="page-head reveal">
+    <h1>{% if q %}Search: "{{ q }}"{% elif category_label %}{{ category_label }}{% else %}All Gear{% endif %}</h1>
+  </div>
+
+  <div class="filter-row">
+    <input type="search" id="filter-search" placeholder="Search gear…" value="{{ q or '' }}">
+    <select id="filter-category">
+      <option value="">All Categories</option>
+      {% for slug, label in category_labels.items() %}
+        <option value="{{ slug }}" {% if current_category == slug %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <span class="results-count" id="results-count" data-total="{{ total_count }}">Showing {{ products|length }} of {{ total_count }} products</span>
+  </div>
+
+  <div class="product-grid" id="product-grid">
+    {% for p in products %}{{ product_card(p) }}{% endfor %}
+  </div>
+
+  <div id="no-results" class="empty" style="display:none;">
+    <p class="muted">No products found. Try a different search or browse all categories.</p>
+    <a href="/products" class="btn-outline">Browse All Gear</a>
+  </div>
+</section>
+
+{% endblock %}
