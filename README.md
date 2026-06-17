@@ -2,7 +2,7 @@
 
 A full-stack outdoor-gear storefront for **Hunting & Fishing Supply Co**
 (2667 Jackson Ave, Memphis, TN 38108 · +1 (406) 206-9144 ·
-WhatsApp +16016013408 · saleshuntingandfishingsupplyco@gmail.com).
+saleshuntingandfishingsupplyco@gmail.com).
 
 Dark-tactical storefront with a 134-product catalog, cart, **quote requests**,
 and a **no-online-payment checkout** (orders notify the owner, who contacts the
@@ -62,7 +62,7 @@ outdoor.db           # SQLite database (created on first run)
 
 | Variable | Purpose |
 | --- | --- |
-| `BUSINESS_NAME`, `BUSINESS_EMAIL`, `BUSINESS_ADDRESS`, `OWNER_PHONE`, `WHATSAPP` | Shown throughout the site & emails |
+| `BUSINESS_NAME`, `BUSINESS_EMAIL`, `BUSINESS_ADDRESS`, `OWNER_PHONE` | Shown throughout the site & emails |
 | `OWNER_EMAIL` | Inbox that receives order & inquiry notifications |
 | `ADMIN_USERNAME`, `ADMIN_PASSWORD` | Admin dashboard credentials (default `admin` / `changeme123`) |
 | `SMTP_HOST/PORT/USER/PASSWORD` | Gmail SMTP. **Leave `SMTP_PASSWORD` blank to disable sending** (emails are logged, never sent). Use a Gmail **App Password**. |

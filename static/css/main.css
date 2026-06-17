@@ -219,13 +219,31 @@ label { display: block; font-size: .82rem; color: var(--muted); font-weight: 500
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
+  html, body { overflow-x: hidden; }            /* kill horizontal scroll */
   .hamburger { display: block; }
   .mega-nav { display: none; }
+  .bar-trust { display: none; }                 /* fixed-height strip wrapped & overlapped the category bar */
+
+  /* Announcement bar: not sticky on mobile so it can wrap without overlapping the nav */
+  .bar-announce { position: static; height: auto; font-size: .68rem; }
+  .announce-inner { height: auto; flex-wrap: wrap; justify-content: center; gap: 2px 10px; padding: 5px 0; }
   .announce-left, .announce-right { display: none; }
-  .announce-center { margin: 0; }
+  .announce-center { margin: 0; text-align: center; word-break: break-word; }
+
+  /* Compact nav that fits the viewport */
+  .bar-nav { top: 0; }
+  .nav-inner { gap: 12px; height: 60px; }
+  .logo-emblem { height: 42px; width: 42px; }
+  .logo-1 { font-size: 1.1rem; }
+  .logo-2 { font-size: .7rem; letter-spacing: 1px; }
   .logo-tag { display: none; }
+  .nav-actions { gap: 8px; margin-left: auto; }
+  .nav-actions .icon-btn:not(.cart-btn) { display: none; }   /* Financing & Quote live in the ☰ menu */
+  .icon-btn { padding: 9px 13px; font-size: .9rem; }
+
   .product-grid { grid-template-columns: repeat(2, 1fr); }
-  .icon-btn { padding: 8px 10px; font-size: .8rem; }
+  .hero-stats { flex-wrap: wrap; gap: 16px 24px; }
+  .filter-row { top: 56px; }
 }
 @media (max-width: 480px) {
   .footer-grid { grid-template-columns: 1fr; }

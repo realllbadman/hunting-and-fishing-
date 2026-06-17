@@ -31,7 +31,6 @@ BUSINESS = {
     "email":    os.getenv("BUSINESS_EMAIL", "saleshuntingandfishingsupplyco@gmail.com"),
     "phone":    os.getenv("OWNER_PHONE", "+14062069144"),
     "phone_display": "+1 (406) 206-9144",
-    "whatsapp": os.getenv("WHATSAPP", "+16016013408"),
     "address":  os.getenv("BUSINESS_ADDRESS", "2667 Jackson Ave, Memphis, TN 38108"),
 }
 
@@ -75,6 +74,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def no_cache_html(request: Request, call_next):
+    """Stop browsers caching rendered HTML so content edits show immediately.
+    Static assets (/static) keep their own ?v= cache-busting and are untouched."""
+    response = await call_next(request)
+    ctype = response.headers.get("content-type", "")
+    if ctype.startswith("text/html"):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
+
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 

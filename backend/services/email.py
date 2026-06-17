@@ -20,7 +20,6 @@ OWNER_EMAIL      = os.getenv("OWNER_EMAIL", "saleshuntingandfishingsupplyco@gmai
 BUSINESS_NAME    = os.getenv("BUSINESS_NAME", "Hunting & Fishing Supply Co")
 OWNER_PHONE      = os.getenv("OWNER_PHONE", "+14062069144")
 PHONE_DISPLAY    = "+1 (406) 206-9144"
-WHATSAPP         = os.getenv("WHATSAPP", "+16016013408")
 BUSINESS_ADDRESS = os.getenv("BUSINESS_ADDRESS", "2667 Jackson Ave, Memphis, TN 38108")
 
 DARK  = "#0e1a0e"
