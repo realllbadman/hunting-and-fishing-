@@ -275,7 +275,7 @@ PRODUCTS_SEED: list[dict] = [
         "original_price": None,
         "badge":          "Best Seller",
         "in_stock":       True,
-        "image":          "https://scontent-los4-1.xx.fbcdn.net/v/t39.30808-6/538154194_122160935672793061_3101360807186578333_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1536x2048&ctp=s1536x2048&_nc_cat=103&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=L9Su0iXKg-AQ7kNvwE4oYIl&_nc_oc=Adp_4sAfk8RJSSjk9ad2hI38qbRUTsVY2F52tEWYP5UxHnVN9z_W3IQ80SR7ePm2BB4T-miXaSTgUffMELD38h6e&_nc_zt=23&_nc_ht=scontent-los4-1.xx&_nc_gid=wTb0exi2JYLuGx70H4Kp6Q&_nc_ss=7b289&oh=00_Af-Hbd8_aBnsPvk9x6QTKb8HE0W3fUtR0crD_6cusnnqLA&oe=6A31BADB",   # <-- product image (filename / URL)
+        "image":          "prod-minn-kota-riptide-ultrex-112lbs-36v.jpg",   # <-- product image (filename / URL)
         "description":    "The saltwater-ready Riptide Ultrex resists corrosion while delivering 112 lbs of cable-steer thrust with optional i-Pilot GPS for inshore and bay fishing.",
         "features": [
             "Saltwater-grade corrosion protection throughout",
@@ -317,7 +317,7 @@ PRODUCTS_SEED: list[dict] = [
         "original_price": None,
         "badge":          None,
         "in_stock":       True,
-        "image":          "https://scontent-los4-1.xx.fbcdn.net/v/t39.30808-6/535392491_24499830316302821_982879488282315349_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=4A2qpwN6hTgQ7kNvwE2fFWn&_nc_oc=AdqlbidOiPqN33UF_FfvpvwHHxKQgu5iEjUA0X_L7TxWEpADsWxrbF4QJTAzZawpxqLy2lcnc0BgAcNCVhZsBSxw&_nc_zt=23&_nc_ht=scontent-los4-1.xx&_nc_gid=VI3I9XcWtqsUNfYAtnxyRw&_nc_ss=7b289&oh=00_Af-6rMXtAP7U1cgwrbNfPvkSF77MM-KV8FIEi1MQsrZq5A&oe=6A31B48C",   # <-- product image (filename / URL)
+        "image":          "prod-minn-kota-riptide-terrova-112lbs-36v.jpg",   # <-- product image (filename / URL)
         "description":    "The Riptide Terrova delivers electric-steer convenience and i-Pilot GPS in a fully saltwater-rated bow-mount with 112 lbs of quiet thrust.",
         "features": [
             "Saltwater-grade corrosion protection and sealed components",
