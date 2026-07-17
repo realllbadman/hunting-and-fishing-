@@ -12,15 +12,15 @@ from backend.services import email
 router = APIRouter()
 
 FREIGHT_MAP = {
-    "Canada/Mexico": 800,
-    "Caribbean/Central America": 900,
-    "South America": 1000,
-    "Europe": 1200,
-    "Middle East/North Africa": 1100,
-    "Sub-Saharan Africa": 1300,
-    "Asia Pacific": 1400,
-    "Australia/New Zealand": 1500,
-    "Other": 1600,
+    "Canada/Mexico": 500,
+    "Caribbean/Central America": 550,
+    "South America": 600,
+    "Middle East/North Africa": 650,
+    "Europe": 675,
+    "Sub-Saharan Africa": 700,
+    "Asia Pacific": 725,
+    "Australia/New Zealand": 750,
+    "Other": 750,
 }
 
 
@@ -33,10 +33,10 @@ def create_order(
     items_dicts = [item.model_dump() for item in order_in.items]
     subtotal = sum(i["unit_price"] * i["quantity"] for i in items_dicts)
 
-    # Domestic: free over $1,000, else flat $500. International: freight map.
-    shipping = 0.0 if subtotal >= 1000 else 500.0
+    # Domestic: free over $1,000, else flat $75. International: freight map.
+    shipping = 0.0 if subtotal >= 1000 else 75.0
     if order_in.freight_region and order_in.freight_region != "Domestic (USA)":
-        shipping = float(FREIGHT_MAP.get(order_in.freight_region, 1600))
+        shipping = float(FREIGHT_MAP.get(order_in.freight_region, 750))
 
     grand_total = subtotal + shipping
 

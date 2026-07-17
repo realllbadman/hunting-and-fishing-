@@ -9,7 +9,7 @@
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="/static/css/main.css?v=22">
+ <link rel="stylesheet" href="/static/css/main.css?v=24">
 </head>
 <body>
 
@@ -124,7 +124,11 @@
 
 <!-- ════ MOBILE MENU ════ -->
 <div id="mobile-menu-panel" class="mobile-menu">
+ <span class="mm-label">Shop</span>
  <a href="/products">Shop All</a>
+ <a href="/products?badge=Sale" class="mm-deals">Deals</a>
+
+ <span class="mm-label">Categories</span>
  <a href="/products?category=trolling-motors">Trolling Motors</a>
  <a href="/products?category=fish-finders">Fish Finders</a>
  <a href="/products?category=small-outboards">Small Outboards</a>
@@ -137,9 +141,16 @@
  <a href="/products?category=crossbows-bows">Crossbows &amp; Bows</a>
  <a href="/products?category=chicken-coops">Chicken Coops</a>
  <a href="/products?category=reloading-powder">Reloading Powder</a>
+
+ <span class="mm-label">Company</span>
  <a href="/about">About</a>
  <a href="/contact">Contact</a>
  <a href="/financing">Financing</a>
+
+ <div class="mm-actions">
+ <a href="#" class="mm-btn" onclick="document.getElementById('mobile-menu-panel').classList.remove('open');openQuoteModal('');return false;">Get a Quote</a>
+ <a href="#" class="mm-btn mm-outline" onclick="document.getElementById('mobile-menu-panel').classList.remove('open');openCart();return false;">View Cart</a>
+ </div>
  <div class="mobile-contact">
  {{ business.phone_display }}<br>{{ business.email }}
  </div>
@@ -248,7 +259,7 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 
-<script src="/static/js/main.js?v=6"></script>
+<script src="/static/js/main.js?v=8"></script>
 <script src="/static/js/animations.js?v=2"></script>
 {% block scripts %}{% endblock %}
 </body>

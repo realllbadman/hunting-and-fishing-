@@ -118,10 +118,16 @@ h1, h2, h3, h4, .heading {
 .cat-wrap::after { right: 38px; background: linear-gradient(-90deg, var(--surface), transparent); }
 
 /* ════ MOBILE MENU ════ */
-.mobile-menu { display: none; flex-direction: column; background: var(--surface-2); border-bottom: 2px solid var(--accent); }
+.mobile-menu { display: none; flex-direction: column; background: var(--surface); border-bottom: 3px solid var(--accent); padding: 4px 0 18px; max-height: calc(100vh - 56px); overflow-y: auto; box-shadow: 0 16px 24px rgba(0,0,0,.12); }
 .mobile-menu.open { display: flex; }
-.mobile-menu a { padding: 13px 20px; border-bottom: 1px solid var(--border); font-family: 'Inter', system-ui, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
-.mobile-contact { padding: 16px 20px; color: var(--muted); font-size: .85rem; }
+.mm-label { font-family: 'Oswald', sans-serif; font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); padding: 16px 22px 4px; }
+.mobile-menu > a { padding: 11px 22px; font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 1.02rem; color: var(--text); }
+.mobile-menu > a:active { background: var(--surface-2); }
+.mobile-menu .mm-deals { color: var(--accent); }
+.mm-actions { display: flex; gap: 10px; padding: 18px 22px 6px; }
+.mm-actions .mm-btn { flex: 1; text-align: center; padding: 13px; border-radius: 4px; background: var(--accent); color: #fff; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .8px; font-size: .95rem; }
+.mm-actions .mm-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+.mobile-contact { padding: 14px 22px 0; color: var(--muted); font-size: .85rem; }
 
 /* ════ FOOTER ════ */
 .site-footer { background: #0a0a0a; border-top: 2px solid var(--accent); margin-top: 64px; }

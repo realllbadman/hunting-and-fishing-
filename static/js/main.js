@@ -4,18 +4,18 @@
    ════════════════════════════════════════════════════════════════════ */
 const CART_KEY = "hfsc_cart";
 const FREE_SHIP_THRESHOLD = 1000;
-const FLAT_SHIP = 500;
+const FLAT_SHIP = 75;
 // International freight by region (must match backend orders.py FREIGHT_MAP).
 const FREIGHT_MAP = {
-  "Canada/Mexico": 800, "Caribbean/Central America": 900, "South America": 1000,
-  "Europe": 1200, "Middle East/North Africa": 1100, "Sub-Saharan Africa": 1300,
-  "Asia Pacific": 1400, "Australia/New Zealand": 1500, "Other": 1600,
+  "Canada/Mexico": 500, "Caribbean/Central America": 550, "South America": 600,
+  "Middle East/North Africa": 650, "Europe": 675, "Sub-Saharan Africa": 700,
+  "Asia Pacific": 725, "Australia/New Zealand": 750, "Other": 750,
 };
 function checkoutShipping(subtotal) {
   if (subtotal === 0) return 0;
   const sel = document.querySelector('[name="freight_region"]');
   const region = sel ? sel.value : "Domestic (USA)";
-  if (region && region !== "Domestic (USA)") return FREIGHT_MAP[region] || 1600;
+  if (region && region !== "Domestic (USA)") return FREIGHT_MAP[region] || 750;
   return subtotal >= FREE_SHIP_THRESHOLD ? 0 : FLAT_SHIP;   // domestic
 }
 
