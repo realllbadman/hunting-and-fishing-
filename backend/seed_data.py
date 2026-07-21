@@ -665,6 +665,34 @@ PRODUCTS_SEED: list[dict] = [
 
     # ══════════════════════════════ FISH FINDERS ══════════════════
     {
+        "slug":           "garmin-echomap-ultra2-126sv-lvs34-combo",
+        "name":           "Garmin ECHOMAP Ultra 2 126sv + LVS34 LiveScope Combo",
+        "brand":          "Garmin",
+        "category":       "fish-finders",
+        "subcategory":    None,
+        "model_number":   "12-inch · ECHOMAP Ultra 2 126sv · LVS34 LiveScope",
+        "price":          800,
+        "price_max":      None,
+        "original_price": None,
+        "badge":          "Hot Deal",
+        "in_stock":       True,
+        "image":          "prod-garmin-echomap-ultra2-126sv-lvs34.jpg",   # <-- product image (filename / URL)
+        "images": [
+            "prod-garmin-echomap-ultra2-126sv-lvs34.jpg",
+            "prod-garmin-echomap-ultra2-126sv-lvs34-2.jpg",
+            "prod-garmin-echomap-ultra2-126sv-lvs34-3.jpg",
+            "prod-garmin-echomap-ultra2-126sv-lvs34-4.jpg",
+        ],
+        "description":    "Garmin ECHOMAP Ultra 2 126sv (12-inch) chartplotter/graph bundled with an LVS34 LiveScope transducer and GLS10 black box. Includes a 125GB high-speed SD card, anti-glare screen protector, transducer shield, and a Fish Obsessed mount. Loaded with BUS001L U.S. & Coastal Canada mapping — running software v43.03.",
+        "features": [
+            "12-inch ECHOMAP Ultra 2 126sv display (software v43.03)",
+            "LVS34 LiveScope transducer with black box + GLS10 module",
+            "125GB high-speed SD card & anti-glare screen protector",
+            "Includes transducer shield and Fish Obsessed mount",
+            "Built-in map: BUS001L — U.S. & Coastal Canada",
+        ],
+    },
+    {
         "slug":           "humminbird-helix-7-chirp-gps",
         "name":           "Humminbird Helix 7 CHIRP GPS G4N",
         "brand":          "Humminbird",
@@ -2884,6 +2912,11 @@ def _normalize(entry: dict) -> dict:
     features = entry.get("features")
     if isinstance(features, (list, tuple)):
         features = json.dumps(list(features))
+    images = entry.get("images")
+    if isinstance(images, (list, tuple)) and images:
+        images = json.dumps([_img(i) for i in images])
+    else:
+        images = None
     return {
         "slug":           entry["slug"],
         "name":           entry["name"],
@@ -2901,4 +2934,5 @@ def _normalize(entry: dict) -> dict:
         "in_stock":       1 if entry.get("in_stock", True) else 0,
         "badge":          entry.get("badge"),
         "image":          _img(entry.get("image")),
+        "images":         images,
     }

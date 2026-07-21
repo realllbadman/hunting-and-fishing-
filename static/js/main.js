@@ -109,6 +109,14 @@ function renderCartDrawer(cart) {
 function openCart() { renderCartDrawer(loadCart()); document.getElementById("cart-drawer").classList.add("open"); document.getElementById("cart-overlay-bg").classList.add("open"); document.body.style.overflow = "hidden"; }
 function closeCart() { document.getElementById("cart-drawer").classList.remove("open"); document.getElementById("cart-overlay-bg").classList.remove("open"); document.body.style.overflow = ""; }
 
+/* ── product-detail image gallery ── */
+function swapPdImage(btn, src) {
+  var main = document.getElementById("pd-main-img");
+  if (main) main.src = src;
+  document.querySelectorAll(".pd-thumb").forEach(function (t) { t.classList.remove("active"); });
+  if (btn) btn.classList.add("active");
+}
+
 /* ── quote modal ── */
 function openQuoteModal(productName) {
   const field = document.getElementById("quote-product-interest");

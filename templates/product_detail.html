@@ -12,12 +12,23 @@
  </nav>
 
  <div class="pd-layout">
- <!-- Image -->
+ <!-- Image + gallery -->
+ <div class="pd-media">
  <div class="pd-image">
- <img src="{{ product.image or '/static/images/placeholder.jpg' }}" alt="{{ product.name }}"
+ <img id="pd-main-img" src="{{ product.image or '/static/images/placeholder.jpg' }}" alt="{{ product.name }}"
  onerror="this.src='/static/images/placeholder.jpg'">
  {% if product.badge %}<span class="card-badge {% if product.badge == 'New' %}badge-new{% elif product.badge == 'Hot Deal' %}badge-hot{% endif %} pd-badge">{{ product.badge }}</span>{% endif %}
  {% if not product.in_stock %}<div class="card-oos-overlay">Out of Stock</div>{% endif %}
+ </div>
+ {% if gallery and gallery|length > 1 %}
+ <div class="pd-thumbs">
+ {% for img in gallery %}
+ <button type="button" class="pd-thumb{% if loop.first %} active{% endif %}" onclick="swapPdImage(this, '{{ img }}')" aria-label="View photo {{ loop.index }}">
+ <img src="{{ img }}" alt="{{ product.name }} — photo {{ loop.index }}" onerror="this.src='/static/images/placeholder.jpg'">
+ </button>
+ {% endfor %}
+ </div>
+ {% endif %}
  </div>
 
  <!-- Info -->

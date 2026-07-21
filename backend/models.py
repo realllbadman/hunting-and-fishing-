@@ -23,6 +23,7 @@ class Product(Base):
     in_stock       = Column(Integer, default=1)    # 1=in stock, 0=out of stock
     badge          = Column(Text, nullable=True)   # "Best Seller","New","Sale","Hot Deal"
     image          = Column(Text, nullable=True)
+    images         = Column(Text, nullable=True)   # JSON list of gallery image paths (optional)
 
 
 class Order(Base):

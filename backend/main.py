@@ -51,6 +51,11 @@ async def lifespan(app):
             _conn.commit()
         except Exception:
             pass  # column already exists
+        try:
+            _conn.execute(_text("ALTER TABLE products ADD COLUMN images TEXT"))
+            _conn.commit()
+        except Exception:
+            pass  # column already exists
     db = SessionLocal()
     try:
         sync_products(db)
@@ -214,6 +219,9 @@ def product_detail(request: Request, slug: str, db: Session = Depends(get_db)):
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     features = json.loads(product.features) if product.features else []
+    gallery = json.loads(product.images) if product.images else []
+    if not gallery and product.image:
+        gallery = [product.image]
     related = (
         db.query(Product)
         .filter(Product.category == product.category, Product.slug != slug)
@@ -226,6 +234,7 @@ def product_detail(request: Request, slug: str, db: Session = Depends(get_db)):
         {
             "product": product,
             "features": features,
+            "gallery": gallery,
             "related": related,
             "category_labels": CATEGORY_LABELS,
         },
