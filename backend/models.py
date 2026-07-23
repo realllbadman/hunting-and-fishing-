@@ -44,7 +44,7 @@ class Order(Base):
     contact_pref   = Column(Text, nullable=True)
     best_time      = Column(Text, nullable=True)
     notes          = Column(Text, nullable=True)
-    payment_method = Column(Text, nullable=True)    # Bank Transfer / Zelle / PayPal / Other: ...
+    payment_method = Column(Text, nullable=True)    # Bank Transfer / Zelle / Other: ...
     items          = Column(Text, nullable=False)   # JSON list of OrderItem dicts
     total          = Column(Float, nullable=False)
     status         = Column(Text, default="pending")

@@ -550,7 +550,7 @@ html[data-theme="light"] .tab.active,
 html[data-theme="light"] .admin-brand span { color: #ffffff; }
 
 /* ════ PAYMENT METHOD TILES (checkout) ════ */
-.pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+.pay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
 .pay-tile { position: relative; display: flex; flex-direction: column; gap: 2px; background: var(--surface-2); border: 2px solid var(--border-med); border-radius: 5px; padding: 13px 12px; cursor: pointer; margin: 0; text-align: center; transition: border-color .2s ease, background .2s ease, transform .15s ease; }
 .pay-tile input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; margin: 0; }
 .pay-tile .pay-name { font-family: 'Inter', system-ui, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; font-size: .9rem; color: var(--text); }

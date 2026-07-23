@@ -77,7 +77,7 @@ outdoor.db           # SQLite database (created on first run)
 3. Two emails are sent (when SMTP is configured): a confirmation to the
    customer and an **"ACTION REQUIRED"** notice to the owner.
 4. The owner contacts the customer to confirm availability and arrange payment
-   (ACH/Wire, Zelle, PayPal). No card is processed online.
+   (ACH/Wire, Zelle, or other arranged method). No card is processed online.
 
 "Request a Quote" buttons post to `POST /api/bookings/` and notify the owner the
 same way.
